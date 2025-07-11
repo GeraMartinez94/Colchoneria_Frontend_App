@@ -1,101 +1,46 @@
-    // src/app/services/auth.service.ts
-    import { Injectable } from '@angular/core';
-    import { HttpClient } from '@angular/common/http';
-    import { Observable, BehaviorSubject, tap } from 'rxjs';
+// Ejemplo: auth.service.ts o product.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-    interface AuthResponse {
-      message: string;
-      user?: {
-        username: string;
-        is_admin: boolean;
-      };
-    }
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService { // O ProductService, etc.
+  private backendUrl = 'https://colchoneria-backend.onrender.com'; // Asegúrate de que esta URL sea correcta
 
-    interface SessionStatus {
-      is_authenticated: boolean;
-      username?: string;
-      is_admin?: boolean;
-    }
+  constructor(private http: HttpClient) { }
 
-    @Injectable({
-      providedIn: 'root'
-    })
-    export class AuthService {
-      // ¡IMPORTANTE! Esta es la URL de tu backend desplegado en Render
-      private baseUrl = 'https://colchoneria-backend.onrender.com'; 
-      private loginUrl = `${this.baseUrl}/api/login`; // <-- Debe usar baseUrl
-      private logoutUrl = `${this.baseUrl}/logout`; // <-- Debe usar baseUrl
-      private sessionStatusUrl = `${this.baseUrl}/api/session_status`; // <-- Debe usar baseUrl
+  // Ejemplo de método de login
+  login(credentials: any): Observable<any> {
+    return this.http.post(`${this.backendUrl}/api/login`, credentials, {
+      withCredentials: true // <--- ¡Añade esta línea!
+    });
+  }
 
-      private _isAuthenticated = new BehaviorSubject<boolean>(false);
-      private _isAdmin = new BehaviorSubject<boolean>(false);
-      private _username = new BehaviorSubject<string | null>(null);
+  // Ejemplo de subida de Excel
+  uploadExcel(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
 
-      isAuthenticated$ = this._isAuthenticated.asObservable();
-      isAdmin$ = this._isAdmin.asObservable();
-      username$ = this._username.asObservable();
+    return this.http.post(`${this.backendUrl}/api/upload-excel`, formData, {
+      withCredentials: true // <--- ¡Añade esta línea aquí también!
+    });
+  }
 
-      constructor(private http: HttpClient) {
-        this.checkSessionStatus().subscribe();
-      }
+  // Ejemplo de obtención de productos
+  getProducts(): Observable<any> {
+    return this.http.get(`${this.backendUrl}/api/productos`, {
+      withCredentials: true // <--- ¡Añade esta línea a todas las solicitudes relevantes!
+    });
+  }
 
-      login(username: string, password: string): Observable<AuthResponse> {
-        return this.http.post<AuthResponse>(this.loginUrl, { username, password }).pipe(
-          tap(response => {
-            if (response.user) {
-              this._isAuthenticated.next(true);
-              this._isAdmin.next(response.user.is_admin);
-              this._username.next(response.user.username);
-              localStorage.setItem('is_authenticated', 'true');
-              localStorage.setItem('is_admin', response.user.is_admin.toString());
-              localStorage.setItem('username', response.user.username);
-            }
-          })
-        );
-      }
+  // Ejemplo de verificación de sesión
+  getSessionStatus(): Observable<any> {
+    return this.http.get(`${this.backendUrl}/api/session_status`, {
+      withCredentials: true // <--- Y aquí también
+    });
+  }
 
-      logout(): Observable<AuthResponse> {
-        return this.http.post<AuthResponse>(this.logoutUrl, {}).pipe(
-          tap(() => {
-            this._isAuthenticated.next(false);
-            this._isAdmin.next(false);
-            this._username.next(null);
-            localStorage.removeItem('is_authenticated');
-            localStorage.removeItem('is_admin');
-            localStorage.removeItem('username');
-          })
-        );
-      }
-
-      checkSessionStatus(): Observable<SessionStatus> {
-        return this.http.get<SessionStatus>(this.sessionStatusUrl).pipe(
-          tap(status => {
-            this._isAuthenticated.next(status.is_authenticated);
-            this._isAdmin.next(status.is_admin || false);
-            this._username.next(status.username || null);
-            if (status.is_authenticated) {
-                localStorage.setItem('is_authenticated', 'true');
-                localStorage.setItem('is_admin', (status.is_admin || false).toString());
-                localStorage.setItem('username', status.username || '');
-            } else {
-                localStorage.removeItem('is_authenticated');
-                localStorage.removeItem('is_admin');
-                localStorage.removeItem('username');
-            }
-          })
-        );
-      }
-
-      get isAuthenticated(): boolean {
-        return this._isAuthenticated.value;
-      }
-
-      get isAdmin(): boolean {
-        return this._isAdmin.value;
-      }
-
-      get username(): string | null {
-        return this._username.value;
-      }
-    }
-    
+  // ... otros métodos ...
+}
