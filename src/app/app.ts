@@ -1,92 +1,77 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterOutlet,RouterLink, Router } from '@angular/router';
-import { ProductService } from './services/product-service';
-import { Subscription } from 'rxjs';
-import { AuthService } from './services/auth';
+// src/app/app.ts (o app.component.ts)
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from './services/auth'; // Asegúrate de la ruta correcta
+import { CommonModule } from '@angular/common'; // Importar CommonModule
+import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router'; // Importar Router
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [
-    RouterOutlet,  
-     RouterLink,
-    CommonModule],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  standalone: true, // Si es standalone
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive], // Importar módulos necesarios
+  template: `
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" routerLink="/">Colchonería</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/productos" routerLinkActive="active">Productos</a>
+          </li>
+          <li class="nav-item" *ngIf="isAdmin">
+            <a class="nav-link" routerLink="/upload-excel" routerLinkActive="active">Subir Excel</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item" *ngIf="!isAuthenticated">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+          </li>
+          <li class="nav-item" *ngIf="isAuthenticated">
+            <span class="navbar-text mr-3">Bienvenido, {{ username }}</span>
+            <button class="btn btn-outline-danger my-2 my-sm-0" (click)="onLogout()">Logout</button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container mt-4">
+      <router-outlet></router-outlet>
+    </div>
+  `,
+  styleUrls: ['./app.css'] // O ['./app.ts.css']
 })
-export class App {
-title = 'El Galpón Colchonería';
-  categories: string[] = [];
-  currentYear: number;
-
-  // Propiedades para el estado de autenticación
+export class AppComponent implements OnInit {
   isAuthenticated: boolean = false;
   isAdmin: boolean = false;
   username: string | null = null;
 
-  private authSubscription: Subscription = new Subscription(); // Para gestionar las suscripciones
-
-  constructor(
-    private productService: ProductService,
-    private authService: AuthService, // Inyecta AuthService
-    private router: Router // Inyecta Router
-  ) {
-    this.currentYear = new Date().getFullYear();
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    // Suscribirse a los cambios de estado de autenticación
-    this.authSubscription.add(
-      this.authService.isAuthenticated$.subscribe(status => {
-        this.isAuthenticated = status;
-      })
-    );
-    this.authSubscription.add(
-      this.authService.isAdmin$.subscribe(status => {
-        this.isAdmin = status;
-      })
-    );
-    this.authSubscription.add(
-      this.authService.username$.subscribe(name => {
-        this.username = name;
-      })
-    );
+    // Suscribirse a los observables del AuthService
+    this.authService.isAuthenticated$.subscribe(status => {
+      this.isAuthenticated = status;
+    });
 
-    // No necesitamos cargar categorías si no hay menú desplegable de categorías
-    // this.loadCategories(); 
+    this.authService.isAdmin$.subscribe(status => {
+      this.isAdmin = status;
+    });
+
+    this.authService.username$.subscribe(name => {
+      this.username = name;
+    });
+
+    // Verificar el estado de la sesión al inicializar el componente
+    this.authService.checkSessionStatus().subscribe();
   }
 
-  // Método para cerrar sesión
   onLogout(): void {
     this.authService.logout().subscribe({
-      next: (response) => {
-        console.log('Sesión cerrada:', response.message);
-        this.router.navigate(['/productos']); // Redirigir a productos después de cerrar sesión
+      next: () => {
+        console.log('Logout exitoso.');
+        // La redirección ya se maneja en el AuthService.logout()
       },
-      error: (error) => {
-        console.error('Error al cerrar sesión:', error);
-        // Manejar el error, quizás mostrar un mensaje al usuario
-      }
-    });
-  }
-
-  // Importante: Desuscribirse para evitar fugas de memoria
-  ngOnDestroy(): void {
-    this.authSubscription.unsubscribe();
-  }
-
-  // Este método ya no es necesario si eliminamos el menú de categorías
-  loadCategories(): void {
-    // Si aún necesitas cargar categorías para otros fines, mantenlo.
-    // Si no, puedes eliminarlo.
-    this.productService.getCategories().subscribe({
-      next: (data) => {
-        this.categories = data;
-        console.log('Categorías cargadas en el frontend:', this.categories);
-      },
-      error: (error) => {
-        console.error('Error al cargar categorías en el frontend:', error);
+      error: (err) => {
+        console.error('Error al cerrar sesión:', err);
+        // Aún si hay error en el logout del backend, forzamos el estado local
+        this.authService.checkSessionStatus().subscribe();
       }
     });
   }
