@@ -52,21 +52,22 @@ export class AuthService {
   }
 
   // Método para cerrar sesión
-  logout(): Observable<any> {
+   logout(): Observable<any> {
     return this.http.post(`${this.backendUrl}/logout`, {}, {
-      withCredentials: true // Crucial para enviar la cookie de sesión
+      withCredentials: true // Importante para enviar la cookie de sesión
     }).pipe(
       tap(() => {
-        // Al cerrar sesión, resetea los BehaviorSubjects
+        // Al cerrar sesión, resetea todos los BehaviorSubjects
         this._isAuthenticated.next(false);
         this._isAdmin.next(false);
         this._username.next(null);
         console.log('Sesión cerrada en AuthService.');
         this.router.navigate(['/login']); // Redirige al login después de cerrar sesión
       }),
-      catchError(this.handleError)
+      catchError(this.handleError) // Manejo de errores
     );
   }
+
 
   // Método para verificar el estado de la sesión al cargar la aplicación
   checkSessionStatus(): Observable<any> {
