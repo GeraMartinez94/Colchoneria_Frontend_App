@@ -1,11 +1,9 @@
-<!-- src/app/app.component.html -->
 <header class="main-header">
   <div class="header-top">
     <div class="header-contact">
       <span><i class="fas fa-map-marker-alt"></i> Av Juan Bautista Alberdi 950</span>
       <span><i class="fas fa-phone"></i> +54-3755-688810</span>
       <span><i class="fas fa-phone"></i> +54-3755-424566</span>
-      <!-- Nuevo enlace de WhatsApp -->
       <a href="https://wa.me/543755688810?text=Hola!%20Me%20interesan%20sus%20productos." target="_blank" class="whatsapp-link" aria-label="WhatsApp">
         <i class="fab fa-whatsapp"></i> Chatear por WhatsApp
       </a>
@@ -17,11 +15,7 @@
     </div>
     <ul class="nav-links">
       <li><a routerLink="/productos">Ver Todos los Productos</a></li>
-      
-      <!-- Enlace para Subir Excel (solo visible para administradores) -->
       <li *ngIf="isAdmin"><a routerLink="/subir-excel">Subir Excel</a></li>
-
-      <!-- Botones de Autenticación -->
       <li *ngIf="!isAuthenticated">
         <a routerLink="/login">Iniciar Sesión</a>
       </li>
@@ -32,7 +26,7 @@
   </nav>
 </header>
 
-<div class="container">
+<div class="main-container">
   <router-outlet></router-outlet>
 </div>
 
@@ -47,16 +41,13 @@
         <span><i class="fas fa-phone"></i> +54 3755 424566</span>
       </div>
     </div>
-
     <div class="footer-section links">
       <h3>Enlaces Rápidos</h3>
       <ul>
         <li><a routerLink="/productos">Productos</a></li>
-        <!-- El enlace de subir excel en el footer también debe ser condicional si lo tienes -->
         <li *ngIf="isAdmin"><a routerLink="/subir-excel">Subir Excel</a></li> 
       </ul>
     </div>
-
     <div class="footer-section social">
       <h3>Síguenos</h3>
       <div class="social-links">
@@ -66,7 +57,6 @@
       </div>
     </div>
   </div>
-
   <div class="footer-bottom">
     &copy; {{ currentYear }} El Galpón Colchonería. Todos los derechos reservados.
   </div>
