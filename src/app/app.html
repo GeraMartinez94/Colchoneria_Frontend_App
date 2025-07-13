@@ -1,59 +1,98 @@
+<!-- src/app/app.html -->
+
+<!-- Encabezado Principal -->
 <header class="main-header">
-  <div class="header-top">
+  <!-- Sección superior del encabezado (información de contacto) -->
+   <div class="header-top">
     <div class="header-contact">
-      <span><i class="fas fa-map-marker-alt"></i> Av Juan Bautista Alberdi 950</span>
-      <span><i class="fas fa-phone"></i> +54-3755-688810</span>
-      <span><i class="fas fa-phone"></i> +54-3755-424566</span>
-      <a href="https://wa.me/543755688810?text=Hola!%20Me%20interesan%20sus%20productos." target="_blank" class="whatsapp-link" aria-label="WhatsApp">
-        <i class="fab fa-whatsapp"></i> Chatear por WhatsApp
+      <!-- Asegúrate de tener Font Awesome o similar para los iconos -->
+      <span><i class="fas fa-phone"></i> +54 3755 688810</span>
+      <span><i class="fas fa-envelope"></i> infocolchoneria.com</span> <!-- Correo electrónico genérico, ya que no se encontró uno específico -->
+      <span><i class="fas fa-map-marker-alt"></i> Av. Juan Bautista Alberdi 950, Oberá - Misiones</span>
+      <a href="https://wa.me/5493755688810" target="_blank" class="whatsapp-link">
+        <i class="fab fa-whatsapp"></i> WhatsApp
       </a>
     </div>
   </div>
+
+  <!-- Contenedor de la barra de navegación (navbar) -->
   <nav class="navbar">
     <div class="navbar-brand">
       <a routerLink="/">El Galpón Colchonería</a>
     </div>
-    <ul class="nav-links">
-      <li><a routerLink="/productos">Ver Todos los Productos</a></li>
-      <li *ngIf="isAdmin"><a routerLink="/subir-excel">Subir Excel</a></li>
-      <li *ngIf="!isAuthenticated">
-        <a routerLink="/login">Iniciar Sesión</a>
-      </li>
-      <li *ngIf="isAuthenticated">
-        <a href="#" (click)="onLogout()">Cerrar Sesión ({{ username }})</a>
-      </li>
-    </ul>
+
+    <!-- Botón para menú móvil (hamburguesa) -->
+    <!-- La clase 'active' se añade/quita con Angular para animar el icono -->
+    <button class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()" [class.active]="isNavbarOpen">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Enlaces de navegación -->
+    <!-- La clase 'active' se añade/quita con Angular para mostrar/ocultar el menú -->
+    <div class="nav-links-wrapper" [class.active]="isNavbarOpen">
+      <ul class="nav-links">
+        <li><a routerLink="/productos" routerLinkActive="active">Productos</a></li>
+        <!-- Ejemplo de dropdown si lo necesitas, adaptado a tus estilos -->
+        <!-- <li class="dropdown">
+          <a href="#" class="dropbtn">Categorías <i class="arrow-down"></i></a>
+          <div class="dropdown-content">
+            <a href="#">Colchones</a>
+            <a href="#">Almohadas</a>
+            <div class="dropdown-divider"></div>
+            <a href="#">Accesorios</a>
+          </div>
+        </li> -->
+        <li *ngIf="isAdmin"><a routerLink="/upload-excel" routerLinkActive="active">Subir Excel</a></li>
+      </ul>
+
+      <!-- Sección de autenticación/usuario -->
+      <ul class="nav-links auth-links">
+        <li *ngIf="!isAuthenticated"><a routerLink="/login" routerLinkActive="active">Login</a></li>
+        <li *ngIf="isAuthenticated">
+          <span class="welcome-text">Bienvenido, {{ username }}</span>
+          <button class="logout-button" (click)="onLogout()">Logout</button>
+        </li>
+      </ul>
+    </div>
   </nav>
 </header>
 
-<div class="main-container">
+<!-- Contenido principal de la aplicación -->
+<div class="container">
   <router-outlet></router-outlet>
 </div>
 
+<!-- Pie de Página Principal -->
 <footer class="main-footer">
   <div class="footer-content">
     <div class="footer-section about">
-      <h3>El Galpón Colchonería</h3>
-      <p>Ofrecemos la mejor calidad en colchones, almohadas y accesorios para tu dormitorio, con la comodidad y el estilo que mereces.</p>
+      <h3>Sobre Nosotros</h3>
+      <!-- Texto genérico de "Sobre Nosotros" ya que no se encontró uno específico en la web -->
+      <p>Somos El Galpón Colchonería, tu mejor opción para el descanso. Ofrecemos productos de calidad superior para asegurar tu confort.</p>
+    </div>
+    <div class="footer-section contact">
+      <h3>Contacto</h3>
       <div class="contact-info">
-        <span><i class="fas fa-map-marker-alt"></i> Av Juan Bautista Alberdi 950</span>
+        <span><i class="fas fa-map-marker-alt"></i> Av. Juan Bautista Alberdi 950, Oberá - Misiones</span>
         <span><i class="fas fa-phone"></i> +54 3755 688810</span>
-        <span><i class="fas fa-phone"></i> +54 3755 424566</span>
+        <span><i class="fas fa-envelope"></i> infocolchoneria.com</span>
       </div>
     </div>
     <div class="footer-section links">
       <h3>Enlaces Rápidos</h3>
       <ul>
         <li><a routerLink="/productos">Productos</a></li>
-        <li *ngIf="isAdmin"><a routerLink="/subir-excel">Subir Excel</a></li> 
+        <li><a routerLink="/login">Login</a></li>
+        <!-- Agrega más enlaces si tienes páginas como "Sobre nosotros", "Contacto", etc. -->
       </ul>
     </div>
     <div class="footer-section social">
       <h3>Síguenos</h3>
       <div class="social-links">
-        <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <!-- Enlaces a redes sociales genéricos, ya que no se encontraron específicos -->
+        <a href="https://facebook.com/elgalponcolchones" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://instagram.com/elgalponcolchones" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://twitter.com/elgalponcolchones" target="_blank"><i class="fab fa-twitter"></i></a>
       </div>
     </div>
   </div>

@@ -1,367 +1,398 @@
-/* src/app/app.component.css */
+/* src/app/app.css */
 
-/* Estilos globales y reseteo */
-:host {
-    font-family: 'Roboto', sans-serif;
-    color: #333;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
+/* Fuentes y estilos generales */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f7f9fc; /* Fondo limpio y claro */
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f4f7f6;
+  color: #333;
 }
 
-/* Estilos para el encabezado principal */
-.main-header {
-    background-color: #ffffff; /* Fondo blanco */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* Sombra sutil */
-    transition: all 0.3s ease-in-out; 
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 15px;
+  min-height: calc(100vh - 200px); /* Ajusta según la altura de tu header y footer */
 }
 
-/* Sección superior del encabezado (información de contacto) */
+/* --- Header Top (Información de contacto) --- */
 .header-top {
-    background-color: #2c3e50; /* Color azul oscuro, más elegante */
-    color: #ecf0f1;
-    padding: 8px 0;
-    font-size: 0.9em;
+  background-color: #2c3e50; /* Un azul oscuro o gris oscuro */
+  color: #ecf0f1; /* Texto claro */
+  padding: 8px 0;
+  font-size: 0.9em;
+  text-align: center;
 }
 
 .header-contact {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 25px;
-    flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center; /* Centra los elementos */
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+  gap: 15px; /* Espacio entre los elementos de contacto */
+  padding: 0 15px;
 }
 
 .header-contact span {
-    display: flex;
-    align-items: center;
-    transition: color 0.3s ease; 
+  display: flex;
+  align-items: center;
 }
 
 .header-contact i {
-    margin-right: 8px;
-    color: #3498db; /* Color de acento azul */
-    transition: color 0.3s ease; 
+  margin-right: 8px;
+  color: #3498db; /* Un color de acento para los iconos */
 }
 
-/* Estilos para el enlace de WhatsApp en el header-top */
-.whatsapp-link {
-    background-color: #25D366;
-    color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+/* Estilos específicos para el enlace de WhatsApp en el header-top */
+.header-contact .whatsapp-link {
+  background-color: #25d366; /* Color de WhatsApp */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.3s ease;
 }
 
-.whatsapp-link:hover {
-    background-color: #1DA851;
-    transform: translateY(-2px);
-    color: white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+.header-contact .whatsapp-link:hover {
+  background-color: #1da851;
 }
 
-.whatsapp-link i {
-    color: white;
-    margin-right: 0;
+.header-contact .whatsapp-link i {
+  color: white; /* Asegura que el icono de WhatsApp sea blanco */
+  margin-right: 0; /* Elimina el margen extra del icono aquí */
 }
 
-/* Contenedor de la barra de navegación (navbar) */
+
+/* --- Main Header (Navbar) --- */
+.main-header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
 .navbar {
-    background-color: #ffffff; /* Fondo blanco para un diseño más limpio */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    transition: background-color 0.3s ease; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
 }
 
-/* Estilos para el logo/marca */
 .navbar-brand a {
-    color: #2c3e50;
-    text-decoration: none;
-    font-size: 1.8em;
-    font-weight: 700;
-    transition: color 0.3s ease; 
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #2c3e50;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
+
 .navbar-brand a:hover {
-    color: #34495e;
-    transform: scale(1.02); 
+  color: #3498db;
 }
 
-/* Estilos para la lista de enlaces de navegación */
-.nav-links {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
+/* Navegación principal y autenticación */
+.nav-links-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 30px; /* Espacio entre los grupos de enlaces */
 }
 
-.nav-links li {
-    position: relative;
-    margin-left: 30px;
+.nav-links,
+.auth-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
 }
 
-.nav-links li a {
-    color: #555; /* Gris más claro para los enlaces */
-    text-decoration: none;
-    font-weight: 500; /* Menos negrita */
-    padding: 10px 0;
-    display: block;
-    transition: color 0.3s ease, transform 0.2s ease; 
-}
-.nav-links li a:hover {
-    color: #3498db; /* Azul de acento al pasar el cursor */
-    transform: translateY(-2px); 
+.nav-links li,
+.auth-links li {
+  margin-left: 25px; /* Espacio entre los ítems de la lista */
 }
 
-/* Estilos del desplegable (si lo tienes implementado) */
-.dropdown .arrow-down {
-    border: solid #555;
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 3px;
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    margin-left: 8px;
-    transition: transform 0.3s ease, border-color 0.3s ease; 
+.nav-links a,
+.auth-links a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  font-size: 1.05em;
+  padding: 8px 0;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
-.dropdown-content {
-    background-color: #ffffff; /* Fondo blanco */
-    border: 1px solid #e0e0e0;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    z-index: 1;
-    border-radius: 5px;
-    overflow: hidden;
-    top: 100%;
-    left: 0;
-    padding: 0;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+.nav-links a:hover,
+.auth-links a:hover,
+.nav-links a.active,
+.auth-links a.active {
+  color: #3498db;
+  border-bottom: 2px solid #3498db;
 }
 
-.dropdown:hover .dropdown-content {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
+.welcome-text {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-right: 15px;
 }
 
-.dropdown-content a {
-    color: #333;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-    transition: background-color 0.3s ease, color 0.3s ease; 
-    font-weight: 500;
+.logout-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background-color 0.3s ease;
 }
 
-.dropdown-content a:hover {
-    background-color: #f7f9fc;
-    color: #3498db;
+.logout-button:hover {
+  background-color: #c0392b;
 }
 
-.dropdown-divider {
-    height: 1px;
-    background-color: #e0e0e0;
+/* Botón de WhatsApp en el Navbar */
+.whatsapp-link-navbar {
+  background-color: #25d366; /* Color de WhatsApp */
+  color: white !important; /* Asegura que el texto sea blanco */
+  padding: 8px 15px;
+  border-radius: 25px; /* Bordes más redondeados para un look de botón */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border-bottom: none !important; /* Elimina el borde inferior al hover */
+}
+
+.whatsapp-link-navbar:hover {
+  background-color: #1da851;
+  transform: translateY(-2px);
+  color: white; /* Asegura que el color del texto permanezca blanco al hover */
+}
+
+.whatsapp-link-navbar i {
+  font-size: 1.2em;
+}
+
+
+/* --- Navbar Toggler (Menú Hamburguesa para Móviles) --- */
+.navbar-toggler {
+  display: none; /* Oculto por defecto en desktop */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  position: relative;
+  z-index: 1001; /* Asegura que esté por encima del menú */
+}
+
+.navbar-toggler-icon {
+  display: block;
+  width: 30px;
+  height: 3px;
+  background-color: #333;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 3px;
+  background-color: #333;
+  position: absolute;
+  transition: transform 0.3s ease, top 0.3s ease;
+}
+
+.navbar-toggler-icon::before {
+  top: -10px;
+}
+
+.navbar-toggler-icon::after {
+  top: 10px;
+}
+
+/* Animación de la hamburguesa a la 'X' */
+.navbar-toggler.active .navbar-toggler-icon {
+  background-color: transparent;
+}
+
+.navbar-toggler.active .navbar-toggler-icon::before {
+  transform: rotate(45deg);
+  top: 0;
+}
+
+.navbar-toggler.active .navbar-toggler-icon::after {
+  transform: rotate(-45deg);
+  top: 0;
+}
+
+/* --- Media Queries para Responsividad --- */
+@media (max-width: 768px) {
+  .header-contact {
+    justify-content: center;
+    font-size: 0.8em;
+    padding: 0 10px;
+  }
+
+  .header-contact span {
     margin: 5px 0;
-    transition: background-color 0.3s ease; 
+  }
+
+  .navbar {
+    padding: 10px 15px;
+  }
+
+  .navbar-toggler {
+    display: block; /* Muestra el botón hamburguesa en móviles */
+  }
+
+  .nav-links-wrapper {
+    display: none; /* Oculta el menú por defecto */
+    flex-direction: column;
+    position: absolute;
+    top: 100%; /* Debajo del navbar */
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    z-index: 999;
+  }
+
+  .nav-links-wrapper.active {
+    display: flex; /* Muestra el menú cuando está activo */
+  }
+
+  .nav-links,
+  .auth-links {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-links li,
+  .auth-links li {
+    margin: 10px 0;
+  }
+
+  .nav-links a,
+  .auth-links a {
+    padding: 10px 0;
+    display: block; /* Para que ocupen todo el ancho y el padding funcione */
+  }
+
+  .welcome-text {
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+
+  .logout-button {
+    width: 80%; /* Botón de logout más ancho en móvil */
+    margin: 10px auto;
+  }
+
+  .whatsapp-link-navbar {
+    width: 80%;
+    margin: 10px auto;
+    justify-content: center; /* Centra el contenido del botón */
+  }
 }
 
-/* El contenedor principal del contenido */
-.container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 20px auto;
-    flex-grow: 1;
-    /* Eliminamos los estilos de tarjeta del contenedor principal */
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInSlideUp 0.6s ease-out forwards;
-}
-
-@keyframes fadeInSlideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- Estilos del Pie de Página (Footer) --- */
+/* --- Footer --- */
 .main-footer {
-    background-color: #2c3e50;
-    color: #ecf0f1;
-    padding: 40px 20px;
-    margin-top: 40px;
-    transition: all 0.3s ease-in-out; 
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 40px 20px 20px;
+  font-size: 0.9em;
+  margin-top: 40px;
 }
 
 .footer-content {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 0 auto;
-    gap: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 20px;
 }
 
 .footer-section {
-    flex: 1;
-    min-width: 250px;
-    padding: 10px;
-    transition: all 0.3s ease-in-out; 
+  flex: 1;
+  min-width: 250px;
+  margin-bottom: 20px;
 }
 
 .footer-section h3 {
-    color: #3498db;
-    margin-bottom: 20px;
-    font-size: 1.3em;
-    font-weight: 700;
-    transition: color 0.3s ease; 
+  color: #3498db;
+  margin-bottom: 15px;
+  font-size: 1.2em;
 }
 
-.footer-section p {
-    font-size: 0.95em;
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-.footer-section .contact-info span {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 0.9em;
-    transition: color 0.3s ease; 
-}
-
-.footer-section .contact-info i {
-    margin-right: 10px;
-    color: #bdc3c7; /* Color de los íconos */
-    transition: color 0.3s ease; 
+.footer-section p,
+.footer-section ul {
+  line-height: 1.6;
 }
 
 .footer-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .footer-section ul li {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .footer-section ul li a {
-    color: #ecf0f1;
-    text-decoration: none;
-    font-size: 0.95em;
-    transition: color 0.3s ease, transform 0.2s ease; 
+  color: #ecf0f1;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .footer-section ul li a:hover {
-    color: #3498db;
-    transform: translateX(5px);
+  color: #3498db;
 }
 
-.social-links {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
+.contact-info span {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.contact-info i {
+  margin-right: 10px;
+  color: #3498db;
 }
 
 .social-links a {
-    color: #ecf0f1;
-    font-size: 1.8em;
-    transition: color 0.3s ease, transform 0.2s ease, text-shadow 0.3s ease; 
+  color: #ecf0f1;
+  font-size: 1.5em;
+  margin-right: 15px;
+  transition: color 0.3s ease;
 }
 
 .social-links a:hover {
-    color: #3498db;
-    transform: translateY(-3px) scale(1.1);
-    text-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
+  color: #3498db;
 }
 
 .footer-bottom {
-    text-align: center;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.85em;
-    color: #bdc3c7;
-    transition: border-top-color 0.3s ease; 
-}
-
-/* Media queries para responsividad */
-@media (max-width: 768px) {
-    .header-contact {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-    .whatsapp-link {
-        width: fit-content;
-        margin-top: 5px;
-    }
-    .navbar {
-        flex-direction: column;
-        padding: 15px 20px;
-    }
-    .navbar-brand {
-        margin-bottom: 15px;
-    }
-    .nav-links {
-        flex-direction: column;
-        width: 100%;
-    }
-    .nav-links li {
-        margin: 10px 0;
-        width: 100%;
-        text-align: center;
-    }
-    .dropdown {
-        width: 100%;
-    }
-    .dropdown-content {
-        position: static;
-        width: 100%;
-        box-shadow: none;
-        border-radius: 0;
-        padding: 0;
-        opacity: 1; 
-        transform: translateY(0);
-        animation: none;
-    }
-    .dropdown-content a {
-        padding: 10px 0;
-    }
-    /* Footer responsivo */
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-    }
-    .footer-section {
-        min-width: unset;
-        margin-bottom: 20px;
-    }
-    .footer-section .contact-info,
-    .social-links {
-        justify-content: center;
-    }
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.85em;
 }

@@ -1,6 +1,8 @@
+// src/app/app.ts
+
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterOutlet,RouterLink, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { RouterOutlet, RouterLink, Router, RouterLinkActive } from '@angular/router';
 import { ProductService } from './services/product-service';
 import { Subscription } from 'rxjs';
 import { AuthService } from './services/auth';
@@ -9,34 +11,36 @@ import { AuthService } from './services/auth';
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet,  
-     RouterLink,
-    CommonModule],
+    RouterOutlet,
+    RouterLink,
+    CommonModule,
+    RouterLinkActive, // Importado aquí
+
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-title = 'El Galpón Colchonería';
+export class App implements OnInit, OnDestroy {
+  title = 'El Galpón Colchonería';
   categories: string[] = [];
   currentYear: number;
 
-  // Propiedades para el estado de autenticación
   isAuthenticated: boolean = false;
   isAdmin: boolean = false;
   username: string | null = null;
+isNavbarOpen: boolean = false; // <-- Nuevo estado para controlar el menú móvil
 
-  private authSubscription: Subscription = new Subscription(); // Para gestionar las suscripciones
+  private authSubscription: Subscription = new Subscription();
 
   constructor(
     private productService: ProductService,
-    private authService: AuthService, // Inyecta AuthService
-    private router: Router // Inyecta Router
+    private authService: AuthService,
+    private router: Router
   ) {
     this.currentYear = new Date().getFullYear();
   }
 
   ngOnInit(): void {
-    // Suscribirse a los cambios de estado de autenticación
     this.authSubscription.add(
       this.authService.isAuthenticated$.subscribe(status => {
         this.isAuthenticated = status;
@@ -53,33 +57,31 @@ title = 'El Galpón Colchonería';
       })
     );
 
-    // No necesitamos cargar categorías si no hay menú desplegable de categorías
-    // this.loadCategories(); 
+    this.authService.checkSessionStatus().subscribe();
   }
 
-  // Método para cerrar sesión
   onLogout(): void {
     this.authService.logout().subscribe({
-      next: (response) => {
-        console.log('Sesión cerrada:', response.message);
-        this.router.navigate(['/productos']); // Redirigir a productos después de cerrar sesión
+      next: () => {
+        console.log('Sesión cerrada exitosamente desde el componente App.');
       },
       error: (error) => {
-        console.error('Error al cerrar sesión:', error);
-        // Manejar el error, quizás mostrar un mensaje al usuario
+        console.error('Error al cerrar sesión desde el componente App:', error);
+        this.authService.checkSessionStatus().subscribe();
       }
     });
   }
 
-  // Importante: Desuscribirse para evitar fugas de memoria
   ngOnDestroy(): void {
     this.authSubscription.unsubscribe();
   }
 
-  // Este método ya no es necesario si eliminamos el menú de categorías
+  // Nuevo método para alternar el estado del menú móvil
+  toggleNavbar(): void {
+    this.isNavbarOpen = !this.isNavbarOpen;
+  }
+
   loadCategories(): void {
-    // Si aún necesitas cargar categorías para otros fines, mantenlo.
-    // Si no, puedes eliminarlo.
     this.productService.getCategories().subscribe({
       next: (data) => {
         this.categories = data;

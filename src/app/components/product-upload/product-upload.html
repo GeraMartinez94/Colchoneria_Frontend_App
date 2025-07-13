@@ -1,26 +1,41 @@
 <!-- src/app/components/product-upload/product-upload.component.html -->
-<div class="product-upload-container">
-  <h3>Subir Productos desde Excel</h3>
+<div class="container mt-4">
+  <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Subir Archivo Excel y Imágenes de Productos</h2>
 
-  <!-- Indicador de carga / Mensaje de espera -->
-  <div *ngIf="isLoading" class="loading-message">
-    <div class="spinner"></div> <!-- Un spinner CSS simple -->
-    {{ uploadMessage }}
+  <div class="form-group mb-4">
+    <label for="excelFile" class="block text-gray-700 text-sm font-bold mb-2">Selecciona el archivo Excel (.xlsx, .xls):</label>
+    <input type="file" id="excelFile" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" (change)="onExcelFileSelected($event)" accept=".xlsx, .xls">
   </div>
 
-  <!-- Mensaje de éxito (solo si no está cargando y no hay error) -->
-  <div *ngIf="!isLoading && uploadMessage && !errorMessage" class="upload-success-toolbar">
-    {{ uploadMessage }}
-  </div>
-  
-  <!-- Mensaje de error (siempre se muestra si hay error) -->
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
+  <div class="form-group mt-4 mb-6">
+    <label for="imageFiles" class="block text-gray-700 text-sm font-bold mb-2">Selecciona imágenes de productos (opcional):</label>
+    <input type="file" id="imageFiles" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" (change)="onImageFilesSelected($event)" accept="image/*" multiple>
+    <small class="form-text text-gray-600 text-xs italic">Nombra las imágenes con el SKU o nombre exacto del producto (ej. "SKU123.jpg", "Colchon Visco.png").</small>
+    <div *ngIf="selectedImageFiles.length > 0" class="mt-2 text-sm text-gray-700">
+      <p class="font-semibold">Imágenes seleccionadas:</p>
+      <ul class="list-disc list-inside">
+        <li *ngFor="let file of selectedImageFiles">{{ file.name }}</li>
+      </ul>
+    </div>
   </div>
 
-  <!-- Formulario de subida (oculto mientras carga) -->
-  <div *ngIf="!isLoading">
-    <input type="file" (change)="onFileSelected($event)" accept=".xlsx, .xls">
-    <button (click)="onUpload()" [disabled]="!selectedFile || isLoading">Subir Excel</button>
+  <button
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+    (click)="onUpload()"
+    [disabled]="!selectedExcelFile || isLoading"
+  >
+    Subir Datos y Imágenes
+  </button>
+
+  <div *ngIf="uploadMessage" class="mt-4 p-3 rounded relative" [ngClass]="{'bg-green-100 border border-green-400 text-green-700': isSuccess, 'bg-red-100 border border-red-400 text-red-700': !isSuccess}">
+    <span>{{ uploadMessage }}</span>
+    <ul *ngIf="uploadErrors.length > 0" class="mt-2 list-disc list-inside text-sm">
+      <li *ngFor="let error of uploadErrors">{{ error }}</li>
+    </ul>
+  </div>
+
+  <div *ngIf="isLoading" class="mt-4 flex items-center justify-center">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+    <p class="ml-3 text-gray-700">Subiendo archivo y imágenes, por favor espera...</p>
   </div>
 </div>

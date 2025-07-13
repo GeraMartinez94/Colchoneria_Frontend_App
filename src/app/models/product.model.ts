@@ -1,13 +1,14 @@
+// src/app/models/product.model.ts (or wherever you define your Product interface)
 export interface Product {
-  id?: number;
+  id: number;
   sku: string;
   nombre: string;
   descripcion: string;
-  categoria?: string; // <-- ¡Nueva propiedad! Hazla opcional por si algunos productos no la tienen inicialmente
+  categoria: string;
   precio: number;
   stock: number;
-  imagen_url?: string;
-  activo?: boolean;
+  imagen_url?: string; // <-- Ensure this exists and is optional
+  activo: boolean;
   fecha_creacion?: string;
   fecha_actualizacion?: string;
 }
