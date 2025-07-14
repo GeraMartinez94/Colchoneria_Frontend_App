@@ -1,7 +1,7 @@
 /* src/app/app.css */
 
 /* Fuentes y estilos generales */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 body {
   font-family: 'Inter', sans-serif;
@@ -129,16 +129,39 @@ body {
   font-weight: 500;
   font-size: 1.05em;
   padding: 8px 0;
-  transition: color 0.3s ease, border-bottom 0.3s ease;
+  position: relative; /* Necesario para el pseudo-elemento */
+  transition: color 0.3s ease; /* Solo transiciona el color */
+}
+
+/* Pseudo-elemento para el subrayado en enlaces de navegación */
+.nav-links a::after,
+.auth-links a::after {
+  content: '';
+  position: absolute;
+  width: 0; /* Empieza con ancho 0 */
+  height: 2px; /* Grosor del subrayado */
+  bottom: -2px; /* Posición debajo del texto */
+  left: 0;
+  background-color: #3498db; /* Color del subrayado */
+  transition: width 0.3s ease-out; /* Transición para el ancho */
+}
+
+/* Efecto al pasar el cursor en enlaces de navegación */
+.nav-links a:hover::after,
+.auth-links a:hover::after,
+.nav-links a.active::after,
+.auth-links a.active::after {
+  width: 100%; /* Ancho completo al hacer hover o estar activo */
 }
 
 .nav-links a:hover,
 .auth-links a:hover,
 .nav-links a.active,
 .auth-links a.active {
-  color: #3498db;
-  border-bottom: 2px solid #3498db;
+  color: #3498db; /* Cambia el color del texto al hacer hover o estar activo */
+  border-bottom: none; /* Asegúrate de que no haya un borde inferior preexistente */
 }
+
 
 .welcome-text {
   color: #2c3e50;
@@ -341,7 +364,33 @@ body {
   color: #3498db;
   margin-bottom: 15px;
   font-size: 1.2em;
+  position: relative; /* Necesario para el pseudo-elemento */
+  display: inline-block; /* Para que el pseudo-elemento se ajuste al ancho del texto */
+  padding-bottom: 5px; /* Espacio para el subrayado */
+  transition: color 0.3s ease; /* Transición para el color del texto */
 }
+
+/* Pseudo-elemento para el subrayado en títulos del footer */
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  width: 0; /* Empieza con ancho 0 */
+  height: 2px; /* Grosor del subrayado */
+  bottom: 0; /* Posición debajo del texto */
+  left: 0;
+  background-color: #ecf0f1; /* Color del subrayado (blanco para contraste) */
+  transition: width 0.3s ease-out; /* Transición para el ancho */
+}
+
+/* Efecto al pasar el cursor en títulos del footer */
+.footer-section h3:hover::after {
+  width: 100%; /* Ancho completo al hacer hover */
+}
+
+.footer-section h3:hover {
+  color: #ecf0f1; /* Cambia el color del texto al pasar el cursor */
+}
+
 
 .footer-section p,
 .footer-section ul {
@@ -395,4 +444,164 @@ body {
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.85em;
+}
+
+/* Estilos para el contenedor del menú desplegable */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Estilos para el botón del menú (el texto "Categorías") */
+.dropbtn {
+  background-color: #ffffff; /* Fondo blanco */
+  color: #555; /* Color de texto gris oscuro */
+  padding: 8px 0; /* Reducido para que el subrayado se alinee mejor */
+  font-size: 1.05em; /* Ajustado al tamaño de los otros enlaces */
+  font-weight: 500; /* Ajustado al peso de los otros enlaces */
+  border: none; /* Asegura que no haya borde */
+  outline: none; /* Elimina el contorno al enfocar/hacer clic */
+  cursor: pointer;
+  border-radius: 0; /* Sin bordes redondeados para un look de enlace */
+  transition: color 0.3s ease; /* Solo transiciona el color */
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: none; /* Elimina la sombra */
+  position: relative; /* Necesario para el pseudo-elemento de subrayado */
+}
+
+.dropbtn:hover {
+  background-color: transparent; /* Transparente al pasar el ratón */
+  transform: none; /* Elimina la transformación al pasar el ratón */
+  box-shadow: none; /* Asegura que no haya sombra al hover */
+  color: #3498db; /* Cambia el color del texto a azul al pasar el ratón */
+}
+
+.dropbtn:active {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Pseudo-elemento para el subrayado en el botón de categorías */
+.dropbtn::after {
+  content: '';
+  position: absolute;
+  width: 0; /* Empieza con ancho 0 */
+  height: 2px; /* Grosor del subrayado */
+  bottom: -2px; /* Alineado con los otros subrayados */
+  left: 0;
+  background-color: #3498db; /* Color del subrayado */
+  transition: width 0.3s ease-out; /* Transición para el ancho */
+}
+
+/* Efecto al pasar el cursor en el botón de categorías */
+.dropbtn:hover::after {
+  width: 100%; /* Ancho completo al pasar el cursor */
+}
+
+
+/* Estilos para el icono de la flecha */
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #555; /* Color de flecha gris oscuro para contraste con fondo blanco */
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Rotación de la flecha al pasar el ratón */
+.dropdown:hover .arrow-down {
+  transform: rotate(180deg);
+  border-top-color: #3498db; /* Cambia el color de la flecha a azul al pasar el ratón */
+}
+
+/* El contenido del menú desplegable (oculto por defecto) */
+.dropdown-content {
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 200px;
+  box-shadow: 0px 10px 30px rgba(0,0,0,0.15); /* Mantiene la sombra para el menú desplegable */
+  z-index: 100;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0; /* Inicialmente transparente */
+  visibility: hidden; /* Inicialmente oculto para no ocupar espacio */
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out; /* Transición para ocultar */
+  transform-origin: top center;
+}
+
+/* Estilos para los enlaces dentro del menú desplegable */
+.dropdown-content a {
+  color: #34495e;
+  padding: 14px 20px;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
+  font-size: 1em;
+  font-weight: 500;
+  border-left: 3px solid transparent;
+}
+
+/* Cambio de color y efecto al pasar el ratón sobre los enlaces */
+.dropdown-content a:hover {
+  background-color: #f0f4f8;
+  color: #3498db; /* Azul principal */
+  padding-left: 25px;
+  border-left-color: #3498db; /* El borde se ilumina con azul */
+}
+
+/* Estilos para el divisor */
+.dropdown-divider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 10px 15px;
+}
+
+/* Muestra el contenido del menú al pasar el ratón sobre el botón */
+.dropdown:hover .dropdown-content {
+  opacity: 1; /* Hace visible el menú */
+  visibility: visible; /* Muestra el menú */
+  transition-delay: 0.1s; /* Retraso al aparecer */
+}
+
+
+/* Animación de aparición del menú: Fade in y Scale up */
+/* Esta animación se combinará con la transición de opacidad/visibilidad */
+@keyframes fadeInScaleUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+/* Media Queries para responsividad (ajustes menores, el menú ya es bastante adaptable) */
+@media (max-width: 768px) {
+  .dropbtn {
+    padding: 12px 18px;
+    font-size: 1em;
+  }
+  .dropdown-content {
+    min-width: 160px;
+    margin-top: 8px;
+  }
+  .dropdown-content a {
+    padding: 10px 15px;
+    font-size: 0.95em;
+  }
+  .dropdown-content a:hover {
+    padding-left: 20px;
+  }
 }
