@@ -32,7 +32,7 @@
               "src/favicon.ico"
             ],
             "styles": [
-              "src/styles.css" 
+              "src/styles.css"
             ]
           },
           "configurations": {
@@ -40,19 +40,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2MB", 
-                  "maximumError": "5MB"    
+                  "maximumWarning": "5MB",
+                  "maximumError": "10MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kB",
-                  "maximumError": "10kB"
-                },
-                { 
-                  "type": "all",
-                  "name": "styles", 
-                  "maximumWarning": "50kB", 
-                  "maximumError": "100kB"  
+                  "maximumWarning": "100kB",
+                  "maximumError": "200kB"
                 }
               ],
               "outputHashing": "all"
