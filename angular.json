@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/colchoneria_frontend", 
+            "outputPath": "dist/colchoneria_frontend",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -29,7 +29,7 @@
                 "input": "src",
                 "output": "/"
               },
-              "src/favicon.ico" 
+              "src/favicon.ico"
             ],
             "styles": [
               "src/styles.css"
@@ -47,6 +47,12 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kB",
                   "maximumError": "10kB"
+                },
+                { 
+                  "type": "all",
+                  "name": "css",
+                  "maximumWarning": "20kb",
+                  "maximumError": "25kb"
                 }
               ],
               "outputHashing": "all"
