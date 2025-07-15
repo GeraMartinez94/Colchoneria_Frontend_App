@@ -8,7 +8,7 @@ import { ProductUploadComponent } from './components/product-upload/product-uplo
 
 export const routes: Routes = [
   { path: 'productos', component: ProductListComponent },
-  { path: 'subir-excel', component: ProductUploadComponent },
+ { path: 'upload-products', component: ProductUploadComponent },
   { path: 'login', component: LoginComponent },
   { path: 'productos/:id', component: ProductDetailsComponent },
   { path: '', redirectTo: '/productos', pathMatch: 'full' },

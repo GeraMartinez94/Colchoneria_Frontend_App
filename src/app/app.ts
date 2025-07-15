@@ -3,8 +3,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterOutlet, RouterLink, Router, RouterLinkActive } from '@angular/router';
-import { ProductService } from './services/product-service';
-import { Subscription } from 'rxjs';
+// import { ProductService } from './services/product-service'; // No es necesario para la lógica del navbar
+import { Subscription, Observable } from 'rxjs'; // Importa Observable
 import { AuthService } from './services/auth';
 
 @Component({
@@ -14,73 +14,72 @@ import { AuthService } from './services/auth';
     RouterOutlet,
     RouterLink,
     CommonModule,
-    RouterLinkActive, // Importado aquí
 
   ],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css'] // Usa styleUrls en lugar de styleUrl para un array
 })
 export class App implements OnInit, OnDestroy {
   title = 'El Galpón Colchonería';
-  categories: string[] = [];
   currentYear: number;
 
-  isAuthenticated: boolean = false;
-  isAdmin: boolean = false;
-  username: string | null = null;
-isNavbarOpen: boolean = false; // <-- Nuevo estado para controlar el menú móvil
+  // Ahora estas propiedades son Observables directamente del servicio
+  isAuthenticated$: Observable<boolean>;
+  isAdmin$: Observable<boolean>;
+  username$: Observable<string | null>;
 
-  private authSubscription: Subscription = new Subscription();
+  isNavbarOpen: boolean = false; // <-- Estado para controlar el menú móvil
+
+  // No necesitamos una Subscription para los observables del AuthService si usamos async pipe
+  // private authSubscription: Subscription = new Subscription();
 
   constructor(
-    private productService: ProductService,
+    // private productService: ProductService, // No es necesario inyectar si no se usa aquí
     private authService: AuthService,
-    private router: Router
+    private router: Router // Mantenemos Router por si se necesita para navegación programática
   ) {
     this.currentYear = new Date().getFullYear();
+
+    // Asigna los observables directamente desde el servicio al constructor
+    this.isAuthenticated$ = this.authService.isAuthenticated$;
+    this.isAdmin$ = this.authService.isAdmin$;
+    this.username$ = this.authService.username$;
   }
 
   ngOnInit(): void {
-    this.authSubscription.add(
-      this.authService.isAuthenticated$.subscribe(status => {
-        this.isAuthenticated = status;
-      })
-    );
-    this.authSubscription.add(
-      this.authService.isAdmin$.subscribe(status => {
-        this.isAdmin = status;
-      })
-    );
-    this.authSubscription.add(
-      this.authService.username$.subscribe(name => {
-        this.username = name;
-      })
-    );
-
-    this.authService.checkSessionStatus().subscribe();
+    // El checkSessionStatus() se puede llamar aquí o, como lo tienes, en el constructor de AuthService
+    // para que se verifique al inicio de la aplicación.
+    // this.authService.checkSessionStatus().subscribe();
   }
 
   onLogout(): void {
     this.authService.logout().subscribe({
       next: () => {
         console.log('Sesión cerrada exitosamente desde el componente App.');
+        // El AuthService ya debería manejar la redirección a /login
       },
       error: (error) => {
         console.error('Error al cerrar sesión desde el componente App:', error);
-        this.authService.checkSessionStatus().subscribe();
+        // Podrías mostrar un mensaje de error al usuario aquí
+        this.authService.checkSessionStatus().subscribe(); // Re-verificar el estado si hubo un error
       }
     });
   }
 
   ngOnDestroy(): void {
-    this.authSubscription.unsubscribe();
+    // Si no hay suscripciones manuales, no es estrictamente necesario un ngOnDestroy para desuscribirse
+    // Si tuvieras otras suscripciones, las desuscribirías aquí.
+    // this.authSubscription.unsubscribe();
   }
 
-  // Nuevo método para alternar el estado del menú móvil
+  // Método para alternar el estado del menú móvil
   toggleNavbar(): void {
     this.isNavbarOpen = !this.isNavbarOpen;
   }
 
+  // La lógica de loadCategories se ha eliminado para simplificar el ejemplo del navbar.
+  // Si la necesitas, puedes reincorporarla o moverla a un componente de productos.
+  /*
   loadCategories(): void {
     this.productService.getCategories().subscribe({
       next: (data) => {
@@ -92,4 +91,5 @@ isNavbarOpen: boolean = false; // <-- Nuevo estado para controlar el menú móvi
       }
     });
   }
+  */
 }
