@@ -104,7 +104,7 @@ export class AuthService {
    * Método para subir archivos Excel e imágenes a la API.
    * @param formData Objeto FormData que contiene el archivo Excel y los archivos de imagen.
    */
-  uploadExcelAndImages(formData: FormData): Observable<any> {
+    uploadExcelAndImages(formData: FormData): Observable<any> {
     return this.http.post(`${this.backendUrl}/api/upload-excel`, formData, {
       withCredentials: true // Crucial para enviar la cookie de sesión
       // NOTA: No establezcas el Content-Type header manualmente para FormData.
@@ -113,6 +113,7 @@ export class AuthService {
       catchError(this.handleError)
     );
   }
+
 
   /**
    * Manejador centralizado de errores HTTP.

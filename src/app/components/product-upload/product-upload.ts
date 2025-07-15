@@ -46,15 +46,15 @@ export class ProductUploadComponent {
     if (!this.selectedExcelFile) {
       this.uploadMessage = 'Por favor, selecciona un archivo Excel para subir.';
       this.isSuccess = false;
-      this.uploadErrors = [];
       return;
     }
 
-    this.isLoading = true; // Show loading indicator
+    this.isLoading = true;
     this.uploadMessage = null; // Clear previous message
-    this.uploadErrors = []; // Clear errors
+    this.uploadErrors = []; // Clear previous errors
 
     const formData = new FormData();
+    // Asegúrate de que 'excel_file' coincida con el nombre del campo esperado en tu backend Flask
     formData.append('excel_file', this.selectedExcelFile, this.selectedExcelFile.name); // Add Excel file
 
     // Add each selected image file
@@ -83,6 +83,11 @@ export class ProductUploadComponent {
         this.isSuccess = false;
         this.isLoading = false;
         this.uploadErrors = error.error?.errors || []; // Capture detailed backend errors
+
+        // If the error indicates missing file specifically, provide more context
+        if (error.status === 400 && error.error?.message === 'No se encontró el archivo') {
+          this.uploadMessage = 'Error: No se detectó el archivo Excel. Asegúrate de seleccionarlo antes de subir.';
+        }
       }
     });
   }

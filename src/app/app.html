@@ -54,7 +54,17 @@
           <li *ngIf="isAdmin$ | async">
            <a class="nav-link" routerLink="/upload-products" routerLinkActive="active">Subir Productos</a>
           </li>
-
+<li class="nav-item" *ngIf="isAuthenticated && !isAdmin">
+          <a routerLink="/perfil" routerLinkActive="active" (click)="toggleNavbar()">Mi Perfil</a>
+        </li>
+       
+        <li class="nav-item" *ngIf="isAuthenticated">
+          <!-- Lógica condicional para el saludo -->
+          <span class="username-display">
+            Hola,
+            <ng-container *ngIf="isAdmin">Admin </ng-container>
+            {{ username }}
+          </span>
           <li class="nav-text">Hola, {{ username$ | async }}</li>
           <li><button (click)="onLogout()" class="logout-button">Cerrar Sesión</button></li>
         </ng-container>
