@@ -6,26 +6,10 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  standalone: true, // Si es standalone
-  imports: [FormsModule], // Importar FormsModule
-  template: `
-    <div class="container">
-      <h2>Iniciar Sesión</h2>
-      <form (ngSubmit)="onLogin()">
-        <div class="form-group">
-          <label for="username">Usuario:</label>
-          <input type="text" id="username" [(ngModel)]="username" name="username" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Contraseña:</label>
-          <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-      </form>
-      <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
-    </div>
-  `,
-  styleUrls: ['./login.css'] // O ['./login.ts.css']
+  standalone: true, 
+  imports: [FormsModule], 
+  templateUrl: './login.html',
+  styleUrls: ['./login.css'] 
 })
 export class LoginComponent {
   username!: string;

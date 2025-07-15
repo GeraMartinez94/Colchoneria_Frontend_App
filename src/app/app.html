@@ -47,7 +47,7 @@
 
       <!-- Sección de autenticación/usuario -->
       <ul class="nav-links auth-links">
-        <li *ngIf="!isAuthenticated"><a routerLink="/login" routerLinkActive="active">Login</a></li>
+        <li *ngIf="!isAuthenticated"><a routerLink="/login" routerLinkActive="active">Inicio de sesion </a></li>
         <li *ngIf="isAuthenticated">
           <span class="welcome-text">Bienvenido, {{ username }}</span>
           <button class="logout-button" (click)="onLogout()">Logout</button>
