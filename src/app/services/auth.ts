@@ -18,8 +18,7 @@ export class AuthService {
   // Asegúrate de que esta URL sea la de tu backend de Render
   private backendUrl = 'https://colchoneria-backend.onrender.com';
 
-  // BehaviorSubjects para mantener el estado de autenticación de forma reactiva
-  private _isAuthenticated = new BehaviorSubject<boolean>(false);
+   private _isAuthenticated = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this._isAuthenticated.asObservable(); // Observable público para el estado de autenticación
 
   private _isAdmin = new BehaviorSubject<boolean>(false);
@@ -85,6 +84,8 @@ export class AuthService {
       withCredentials: true // Importante para enviar la cookie de sesión
     }).pipe(
       tap((response: any) => {
+        // Log para depuración: Muestra la respuesta del backend sobre la sesión
+        console.log('Estado de sesión del backend:', response);
         // Actualiza el estado de autenticación basado en la respuesta del backend
         if (response && response.is_authenticated) {
           this._isAuthenticated.next(true);
