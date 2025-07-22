@@ -31,7 +31,7 @@ export class ProductUploadComponent {
     }
   }
 
-  onImageFilesSelected(event: Event): void {
+ /* onImageFilesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
       this.selectedImageFiles = Array.from(input.files); // Convert FileList to Array
@@ -41,7 +41,7 @@ export class ProductUploadComponent {
       this.selectedImageFiles = [];
     }
   }
-
+*/
   onUpload(): void {
     if (!this.selectedExcelFile) {
       this.uploadMessage = 'Por favor, selecciona un archivo Excel para subir.';
