@@ -1,93 +1,107 @@
 // src/app/components/product-upload/product-upload.component.ts
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Required for *ngIf, *ngFor
-import { AuthService } from '../../services/auth'; // Ensure correct path to AuthService
+import { CommonModule } from '@angular/common'; // Necesario para *ngIf
+import { FormsModule } from '@angular/forms'; // Necesario para formularios
+import { AuthService } from '../../services/auth'; // Asegúrate de la ruta correcta
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-upload',
-  standalone: true, // If it's a standalone component
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule], // Importa CommonModule y FormsModule
   templateUrl: './product-upload.html',
   styleUrls: ['./product-upload.css']
 })
 export class ProductUploadComponent {
+  // Archivo Excel seleccionado por el usuario
   selectedExcelFile: File | null = null;
-  selectedImageFiles: File[] = []; // Array to store multiple image files
+  // Archivos de imagen seleccionados por el usuario (puede ser más de uno)
+  selectedImageFiles: File[] = [];
+  // Mensaje de éxito para mostrar al usuario
   uploadMessage: string | null = null;
-  isSuccess: boolean = false;
+  // Mensaje de error para mostrar al usuario
+  errorMessage: string | null = null;
+  // Indicador de carga para la UI
   isLoading: boolean = false;
-  uploadErrors: string[] = []; // To display specific backend errors
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
+  /**
+   * Maneja el evento cuando se selecciona un archivo Excel.
+   * @param event El evento de cambio del input de tipo 'file'.
+   */
   onExcelFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedExcelFile = input.files[0];
-      this.uploadMessage = null; // Clear previous message
-      this.uploadErrors = []; // Clear errors
+      this.uploadMessage = null; // Limpiar mensajes anteriores
+      this.errorMessage = null;
+      console.log('Archivo Excel seleccionado:', this.selectedExcelFile.name);
     } else {
       this.selectedExcelFile = null;
     }
   }
 
- /* onImageFilesSelected(event: Event): void {
+  /**
+   * Maneja el evento cuando se seleccionan archivos de imagen.
+   * @param event El evento de cambio del input de tipo 'file'.
+   */
+  onImageFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      this.selectedImageFiles = Array.from(input.files); // Convert FileList to Array
-      this.uploadMessage = null; // Clear previous message
-      this.uploadErrors = []; // Clear errors
+      this.selectedImageFiles = Array.from(input.files); // Convierte FileList a Array
+      this.uploadMessage = null; // Limpiar mensajes anteriores
+      this.errorMessage = null;
+      console.log('Archivos de imagen seleccionados:', this.selectedImageFiles.map(f => f.name));
     } else {
       this.selectedImageFiles = [];
     }
   }
-*/
+
+  /**
+   * Envía el archivo Excel y las imágenes al backend.
+   */
   onUpload(): void {
+    // Resetear mensajes antes de un nuevo intento de subida
+    this.uploadMessage = null;
+    this.errorMessage = null;
+
+    // Validar que se haya seleccionado un archivo Excel
     if (!this.selectedExcelFile) {
-      this.uploadMessage = 'Por favor, selecciona un archivo Excel para subir.';
-      this.isSuccess = false;
+      this.errorMessage = 'Por favor, selecciona un archivo Excel para subir.';
       return;
     }
 
-    this.isLoading = true;
-    this.uploadMessage = null; // Clear previous message
-    this.uploadErrors = []; // Clear previous errors
+    this.isLoading = true; // Activar el indicador de carga
 
+    // Crear un objeto FormData para enviar los archivos
     const formData = new FormData();
-    // Asegúrate de que 'excel_file' coincida con el nombre del campo esperado en tu backend Flask
-    formData.append('excel_file', this.selectedExcelFile, this.selectedExcelFile.name); // Add Excel file
+    formData.append('excel_file', this.selectedExcelFile, this.selectedExcelFile.name);
 
-    // Add each selected image file
-    this.selectedImageFiles.forEach((file) => {
-      formData.append('images', file, file.name); // 'images' is the key expected by Flask
+    // Añadir cada archivo de imagen al FormData
+    this.selectedImageFiles.forEach(file => {
+      formData.append('images', file, file.name);
     });
 
+    // Llamar al servicio de autenticación para subir los archivos
     this.authService.uploadExcelAndImages(formData).subscribe({
       next: (response) => {
-        this.uploadMessage = response.message || 'Datos y imágenes subidos con éxito.';
-        this.isSuccess = true;
-        this.isLoading = false;
+        this.uploadMessage = response.message || 'Archivos subidos con éxito.';
+        console.log('Subida exitosa:', response);
+        this.isLoading = false; // Desactivar el indicador de carga
+        // Opcional: Limpiar los archivos seleccionados después de una subida exitosa
         this.selectedExcelFile = null;
-        this.selectedImageFiles = []; // Clear selected images
-        this.uploadErrors = response.errors || []; // Display backend errors if any
-
-        // Clear file inputs
-        const excelFileInput = document.getElementById('excelFile') as HTMLInputElement;
-        if (excelFileInput) excelFileInput.value = '';
-        const imageFilesInput = document.getElementById('imageFiles') as HTMLInputElement;
-        if (imageFilesInput) imageFilesInput.value = '';
+        this.selectedImageFiles = [];
+        // Resetear los inputs de archivo para permitir nuevas selecciones
+        const excelInput = document.getElementById('excelFile') as HTMLInputElement;
+        if (excelInput) excelInput.value = '';
+        const imageInput = document.getElementById('imageFiles') as HTMLInputElement;
+        if (imageInput) imageInput.value = '';
       },
-      error: (error) => {
-        console.error('Error al subir el archivo y las imágenes:', error);
-        this.uploadMessage = error.error?.message || 'Error al subir los datos y las imágenes. Inténtalo de nuevo.';
-        this.isSuccess = false;
-        this.isLoading = false;
-        this.uploadErrors = error.error?.errors || []; // Capture detailed backend errors
-
-        // If the error indicates missing file specifically, provide more context
-        if (error.status === 400 && error.error?.message === 'No se encontró el archivo') {
-          this.uploadMessage = 'Error: No se detectó el archivo Excel. Asegúrate de seleccionarlo antes de subir.';
-        }
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Error al subir los archivos. Inténtalo de nuevo.';
+        console.error('Error durante la subida:', err);
+        this.isLoading = false; // Desactivar el indicador de carga
       }
     });
   }
