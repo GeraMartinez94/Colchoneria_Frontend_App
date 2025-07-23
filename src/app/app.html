@@ -1,13 +1,12 @@
-<!-- src/app/app.html -->
+<!-- src/app/app.component.html -->
 
-<!-- Encabezado Principal -->
+<!-- Main Header -->
 <header class="main-header">
-  <!-- Sección superior del encabezado (información de contacto) -->
+  <!-- Top header section (contact info) -->
    <div class="header-top">
     <div class="header-contact">
-      <!-- Asegúrate de tener Font Awesome o similar para los iconos -->
       <span><i class="fas fa-phone"></i> +54 3755 688810</span>
-      <span><i class="fas fa-envelope"></i> infocolchoneria.com</span> <!-- Correo electrónico genérico, ya que no se encontró uno específico -->
+      <span><i class="fas fa-envelope"></i> infocolchoneria.com</span>
       <span><i class="fas fa-map-marker-alt"></i> Av. Juan Bautista Alberdi 950, Oberá - Misiones</span>
       <a href="https://wa.me/5493755688810" target="_blank" class="whatsapp-link">
         <i class="fab fa-whatsapp"></i> WhatsApp
@@ -15,75 +14,112 @@
     </div>
   </div>
 
-  <!-- Contenedor de la barra de navegación (navbar) -->
+  <!-- Navbar Container (simplified for sidebar integration) -->
   <nav class="navbar">
-
-    <!-- Botón para menú móvil (hamburguesa) -->
-    <!-- La clase 'active' se añade/quita con Angular para animar el icono -->
-    <button class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()" [class.active]="isNavbarOpen">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Enlaces de navegación -->
-    <!-- La clase 'active' se añade/quita con Angular para mostrar/ocultar el menú -->
-    <div class="nav-links-wrapper" [class.active]="isNavbarOpen">
-      <ul class="nav-links">
-        <li><a routerLink="/productos" routerLinkActive="active" (click)="isNavbarOpen = false">Productos</a></li>
-
-        <!-- Menú desplegable de Categorías adaptado a tu estructura -->
-        <li class="dropdown">
-          <a href="#" class="dropbtn" (click)="$event.preventDefault()">Categorías <i class="fas fa-chevron-down"></i></a>
-          <div class="dropdown-content">
-            <a routerLink="/productos/categoria/colchones" (click)="isNavbarOpen = false">Colchones</a>
-            <a routerLink="/productos/categoria/almohadas" (click)="isNavbarOpen = false">Almohadas</a>
-            <div class="dropdown-divider"></div>
-            <a routerLink="/productos/categoria/accesorios" (click)="isNavbarOpen = false">Accesorios</a>
-          </div>
-        </li>
-
-        <!-- Contenido del navbar cuando el usuario NO está autenticado -->
-        <!-- Este bloque se muestra SOLO si isAuthenticated$ es false -->
-        <ng-container *ngIf="(isAuthenticated$ | async) === false">
-          <li><a routerLink="/login" routerLinkActive="active" (click)="isNavbarOpen = false">Iniciar Sesión</a></li>
-        </ng-container>
-
-
-        <!-- Contenido del navbar cuando el usuario SÍ está autenticado -->
-        <ng-container *ngIf="isAuthenticated$ | async">
-          <!-- Enlace a Subir Excel (solo para administradores) -->
-          <li *ngIf="isAdmin$ | async">
-           <a class="nav-link" routerLink="/upload-products" routerLinkActive="active">Subir Productos</a>
-          </li>
-<li class="nav-item" *ngIf="isAuthenticated && !isAdmin">
-          <a routerLink="/perfil" routerLinkActive="active" (click)="toggleNavbar()">Mi Perfil</a>
-        </li>
-       
-        <li class="nav-item" *ngIf="isAuthenticated">
-          <!-- Lógica condicional para el saludo -->
-          <span class="username-display">
-            Hola,
-            <ng-container *ngIf="isAdmin">Admin </ng-container>
-            {{ username }}
-          </span>
-          <li class="nav-text">Hola, {{ username$ | async }}</li>
-          <li><button (click)="onLogout()" class="logout-button">Cerrar Sesión</button></li>
-        </ng-container>
-      </ul>
+    <div class="navbar-brand">
+      <a routerLink="/">El Galpón Colchonería</a>
     </div>
+    <!-- El botón de alternar (sidebar-toggler) se ha movido fuera de aquí y será fijo -->
   </nav>
 </header>
 
-<!-- Contenido principal de la aplicación -->
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
+<!-- Sidebar Toggle Button (Hamburger Icon) - Ahora es un elemento fijo -->
+<button class="sidebar-toggler" (click)="toggleSidebar()" [class.active]="isSidebarOpen" aria-label="Toggle sidebar">
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+</button>
 
-<!-- Pie de Página Principal -->
+<!-- Sidebar Component -->
+<aside class="sidebar" [class.open]="isSidebarOpen">
+  <div class="sidebar-header">
+    <button class="close-sidebar-btn" (click)="closeSidebar()">
+      <i class="fas fa-times"></i> <!-- Close icon -->
+    </button>
+    <div class="sidebar-brand">
+      El Galpón
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul>
+      <li>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeSidebar()">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+      </li>
+      <li>
+        <a routerLink="/productos" routerLinkActive="active" (click)="closeSidebar()">
+          <i class="fas fa-box"></i> Productos
+        </a>
+      </li>
+
+      <!-- Categories Dropdown within Sidebar -->
+          <!-- Dropdown de Categorías -->
+        <li class="dropdown-sidebar">
+          <button class="dropbtn-sidebar" (click)="toggleCategoriesDropdown()">
+            <i class="fas fa-th-large"></i> Categorías <i class="fas fa-chevron-down dropdown-icon" [ngClass]="{ 'rotate': isCategoriesDropdownOpen }"></i>
+          </button>
+          <div class="dropdown-content-sidebar" [ngClass]="{ 'open': isCategoriesDropdownOpen }">
+            <a routerLink="/productos/colchones" routerLinkActive="active">Colchones</a>
+            <a routerLink="/productos/sommiers" routerLinkActive="active">Sommiers</a>
+            <a routerLink="/productos/almohadas" routerLinkActive="active">Almohadas</a>
+            <a routerLink="/productos/blanqueria" routerLinkActive="active">Blanquería</a>
+            <a routerLink="/productos/accesorios" routerLinkActive="active">Accesorios</a>
+          </div>
+        </li>
+
+
+      <!-- Link to Upload Products (only for administrators) -->
+      <li *ngIf="authService.isAdmin$ | async">
+        <a routerLink="/upload-products" routerLinkActive="active" (click)="closeSidebar()">
+          <i class="fas fa-upload"></i> Subir Productos
+        </a>
+      </li>
+
+      <!-- Login/Logout Conditional Links -->
+      <ng-container *ngIf="!(authService.isAuthenticated$ | async); else authenticatedLinks">
+        <li>
+          <a routerLink="/login" routerLinkActive="active" (click)="closeSidebar()">
+            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+          </a>
+        </li>
+      </ng-container>
+
+      <ng-template #authenticatedLinks>
+        <li>
+          <a routerLink="/perfil" routerLinkActive="active" (click)="closeSidebar()">
+            <i class="fas fa-user-circle"></i> Mi Perfil
+          </a>
+        </li>
+        <li class="user-info-and-logout">
+          <span class="username-display">
+            Hola,
+            <ng-container *ngIf="authService.isAdmin$ | async">Admin </ng-container>
+            {{ authService.username$ | async }}
+          </span>
+          <button (click)="onLogout()" class="logout-button">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+          </button>
+        </li>
+      </ng-template>
+    </ul>
+  </nav>
+</aside>
+
+<!-- Overlay for when sidebar is open -->
+<div class="overlay" [class.active]="isSidebarOpen" (click)="closeSidebar()"></div>
+
+<!-- Main content area -->
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- Main Footer -->
 <footer class="main-footer">
   <div class="footer-content">
     <div class="footer-section about">
       <h3>Sobre Nosotros</h3>
-      <!-- Texto genérico de "Sobre Nosotros" ya que no se encontró uno específico en la web -->
       <p>Somos El Galpón Colchonería, tu mejor opción para el descanso. Ofrecemos productos de calidad superior para asegurar tu confort.</p>
     </div>
     <div class="footer-section contact">
@@ -98,15 +134,12 @@
       <h3>Enlaces Rápidos</h3>
       <ul>
         <li><a routerLink="/productos">Productos</a></li>
-        <!-- La lógica de login ahora está en el navbar principal -->
-        <!-- <li><a routerLink="/login">Login</a></li> -->
-        <!-- Agrega más enlaces si tienes páginas como "Sobre nosotros", "Contacto", etc. -->
+        <li><a routerLink="/login">Login</a></li>
       </ul>
     </div>
     <div class="footer-section social">
       <h3>Síguenos</h3>
       <div class="social-links">
-        <!-- Enlaces a redes sociales genéricos, ya que no se encontraron específicos -->
         <a href="https://facebook.com/elgalponcolchones" target="_blank"><i class="fab fa-facebook-f"></i></a>
         <a href="https://instagram.com/elgalponcolchones" target="_blank"><i class="fab fa-instagram"></i></a>
         <a href="https://twitter.com/elgalponcolchones" target="_blank"><i class="fab fa-twitter"></i></a>

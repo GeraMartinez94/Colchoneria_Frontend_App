@@ -2,11 +2,17 @@
 <div class="product-list-container">
   <h2>Nuestros Productos</h2>
 
+  <!-- Barra de búsqueda elegante -->
+  <div class="search-bar-container">
+    <input type="text" placeholder="Buscar productos..." />
+    <button><i class="fas fa-search"></i></button>
+  </div>
+
   <!-- Botón para eliminar todos los productos -->
-  <button 
-    (click)="onDeleteAllProducts()" 
+  <button
+    (click)="onDeleteAllProducts()"
     class="delete-button"
-    *ngIf="products.length > 0" 
+    *ngIf="products.length > 0"
   >
     Eliminar Todos los Productos
   </button>
@@ -41,7 +47,7 @@
         <p class="product-description">{{ product.descripcion }}</p>
         <div class="product-price">{{ product.precio | currency:'USD':'symbol':'1.2-2' }}</div>
         <div class="product-stock">Stock: {{ product.stock }} unidades</div>
-        
+
         <!-- Botón "Ver Detalles" con routerLink -->
         <button class="add-to-cart-button" [routerLink]="['/productos', product.id]">Ver Detalles</button>
       </div>

@@ -13,7 +13,7 @@ import { Product } from '../../models/product.model';
   styleUrls: ['./product-details.css']
 })
 export class ProductDetailsComponent implements OnInit {
-  product: Product | undefined;
+   product: Product | undefined;
   errorMessage: string = '';
   loading: boolean = true;
 
@@ -43,21 +43,29 @@ export class ProductDetailsComponent implements OnInit {
     });
   }
 
+  /**
+   * Carga los detalles de un producto específico por su ID.
+   * @param id El ID del producto a cargar.
+   */
   loadProductDetails(id: number): void {
-    this.loading = true;
+    this.loading = true; // Indicar que la carga está en progreso
     this.productService.getProductById(id).subscribe({
       next: (data) => {
         this.product = data;
-        this.loading = false;
+        this.loading = false; // La carga ha terminado
+        this.errorMessage = ''; // Limpiar cualquier mensaje de error previo
       },
       error: (error) => {
         console.error('Error al cargar los detalles del producto:', error);
         this.errorMessage = 'No se pudo cargar el producto. Por favor, inténtalo de nuevo más tarde.';
-        this.loading = false;
+        this.loading = false; // La carga ha terminado con error
       }
     });
   }
 
+  /**
+   * Navega de vuelta a la lista de productos.
+   */
   goBackToList(): void {
     this.router.navigate(['/productos']);
   }

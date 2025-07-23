@@ -5,21 +5,20 @@
   width: 90%;
   max-width: 1200px;
   margin: 40px auto;
-  padding: 30px;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  padding: 35px; /* Más padding */
+  /* Degradado muy sutil para el fondo del contenedor principal */
+  background: linear-gradient(to bottom right, #ffffff, #fdfefe); /* Blanco puro a un blanco muy suave */
+  border: 1px solid #e9ecef; /* Borde muy claro */
+  border-radius: 18px; /* Más redondeado */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06); /* Sombra más suave y extendida */
   text-align: center;
-  font-family: 'Roboto', sans-serif;
-  color: #333;
-  /* Animación de entrada para el contenedor de la lista de productos */
+  font-family: 'Inter', sans-serif;
+  color: #343a40;
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeInSlideUp 0.8s ease-out forwards; /* Retraso ligeramente para después del contenedor principal */
+  animation: fadeInSlideUp 0.8s ease-out forwards;
 }
 
-/* El keyframe es el mismo que en app.component.css, pero aquí se aplica directamente */
 @keyframes fadeInSlideUp {
   from {
     opacity: 0;
@@ -33,134 +32,254 @@
 
 /* Estilos para el título principal */
 h2 {
-  color: #2c3e50;
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 2.2em;
-  font-weight: 700;
+  color: #212529; /* Negro muy oscuro */
+  font-size: 2.8em; /* Más grande */
+  margin-bottom: 30px; /* Más espacio */
+  font-weight: 800; /* Más audaz */
+  letter-spacing: -0.8px; /* Más ajustado */
+  position: relative;
+  display: inline-block;
 }
 
-/* Estilos para el botón de eliminar */
-.delete-button {
-  background-color: #e74c3c;
-  color: white;
-  padding: 12px 25px;
+/* Subrayado animado para el título */
+h2::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 5px; /* Más grueso */
+  background: linear-gradient(to right, #007bff, #0056b3); /* Degradado azul primario */
+  bottom: -12px; /* Más abajo */
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 3px;
+  animation: expandUnderline 1s ease-out forwards 0.5s;
+}
+
+@keyframes expandUnderline {
+  from { width: 0; }
+  to { width: 90px; } /* Ancho deseado del subrayado */
+}
+
+/* Estilos para la barra de búsqueda */
+.search-bar-container {
+  max-width: 550px; /* Más ancho */
+  margin: 25px auto 40px; /* Más espacio */
+  display: flex;
+  align-items: center;
+  background-color: #ffffff; /* Fondo blanco */
+  border-radius: 40px; /* Muy redondeado */
+  border: 1px solid #dee2e6; /* Borde sutil */
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06); /* Sombra suave */
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.search-bar-container:focus-within {
+  box-shadow: 0 5px 20px rgba(0, 123, 255, 0.18); /* Sombra azul al enfocar */
+  border-color: #80bdff; /* Borde azul al enfocar */
+}
+
+.search-bar-container input[type="text"] {
+  flex-grow: 1;
+  padding: 16px 25px; /* Más padding */
   border: none;
-  border-radius: 25px;
+  background: transparent;
+  font-size: 1.1em; /* Más grande */
+  outline: none;
+  color: #343a40;
+}
+
+.search-bar-container input[type="text"]::placeholder {
+  color: #adb5bd; /* Color de placeholder más suave */
+}
+
+.search-bar-container button {
+  background: none;
+  border: none;
+  padding: 14px 22px; /* Más padding */
   cursor: pointer;
-  font-size: 1em;
-  font-weight: 600;
-  margin-bottom: 30px;
-  /* Transiciones mejoradas para el botón de eliminar */
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
-}
-.delete-button:hover {
-  background-color: #c0392b;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
-}
-.delete-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3);
+  color: #007bff; /* Azul primario para el icono */
+  font-size: 1.5em; /* Más grande */
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
-/* Estilos para mensajes de error */
-.error-message {
-  color: #c0392b;
-  text-align: center;
-  margin: 15px auto;
-  padding: 15px;
-  background-color: #ffebeb;
-  border: 1px solid #e74c3c;
-  border-radius: 8px;
-  font-weight: bold;
-  max-width: 600px;
-  /* Animación de entrada/salida para mensajes */
-  opacity: 0; /* Oculto por defecto */
-  animation: fadeIn 0.5s ease-out forwards; /* Aparece suavemente */
+.search-bar-container button:hover {
+  color: #0056b3;
+  transform: scale(1.1);
 }
 
-/* Estilos para mensajes de éxito */
-.success-message {
-  color: #27ae60;
-  text-align: center;
-  margin: 15px auto;
-  padding: 15px;
-  background-color: #eafaea;
-  border: 1px solid #2ecc71;
-  border-radius: 8px;
-  font-weight: bold;
-  max-width: 600px;
-  /* Animación de entrada/salida para mensajes */
-  opacity: 0; /* Oculto por defecto */
-  animation: fadeIn 0.5s ease-out forwards; /* Aparece suavemente */
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-
-/* Estilos para el mensaje de "no hay productos" */
-.no-products-message {
-  margin-top: 30px;
-  font-style: italic;
-  color: #7f8c8d;
-  font-size: 1.1em;
-  /* Transición si el mensaje aparece/desaparece */
-  opacity: 0;
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-/* --- Estilos para la cuadrícula de tarjetas de productos --- */
-.product-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
-}
-
-/* Estilos para cada tarjeta de producto individual */
-.product-card {
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
+/* Estilos para la sección de filtros */
+.filter-section {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+  justify-content: center;
+  gap: 20px; /* Espacio entre los grupos de filtros */
+  margin-bottom: 35px; /* Espacio antes del botón de eliminar */
+  padding: 20px;
+  background-color: #f8f9fa; /* Fondo claro para la sección de filtros */
   border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  /* Transiciones mejoradas para la tarjeta */
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.filter-group {
   display: flex;
   flex-direction: column;
-  text-align: left;
-  /* Animación de entrada escalonada para las tarjetas */
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInSlideUp 0.5s ease-out forwards;
+  align-items: flex-start; /* Alinea label y select a la izquierda */
+  min-width: 150px; /* Ancho mínimo para cada grupo de filtro */
 }
 
-/* Animación de entrada escalonada para cada tarjeta */
-.product-cards-grid .product-card:nth-child(1) { animation-delay: 0.1s; }
-.product-cards-grid .product-card:nth-child(2) { animation-delay: 0.2s; }
-.product-cards-grid .product-card:nth-child(3) { animation-delay: 0.3s; }
-.product-cards-grid .product-card:nth-child(4) { animation-delay: 0.4s; }
-.product-cards-grid .product-card:nth-child(5) { animation-delay: 0.5s; }
-.product-cards-grid .product-card:nth-child(6) { animation-delay: 0.6s; }
-/* Puedes añadir más si esperas más tarjetas, o usar JS para un delay dinámico */
+.filter-group label {
+  font-size: 0.95em;
+  color: #495057;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
 
+.filter-group select {
+  padding: 10px 15px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  font-size: 1em;
+  color: #343a40;
+  background-color: #ffffff;
+  appearance: none; /* Elimina el estilo por defecto del select */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236c757d%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13.2-6.4H18.6c-5%200-9.3%201.8-13.2%205.4-3.9%203.6-5.9%208.1-5.9%2013.7%200%205.5%202%2010.1%205.9%2013.7l118.2%20118.2c3.9%203.6%208.4%205.4%2013.2%205.4s9.3-1.8%2013.2-5.4L287%2096.9c3.9-3.6%205.9-8.1%205.9-13.7s-2-10.1-5.9-13.8z%22%2F%3E%3C%2Fsvg%3E'); /* Flecha personalizada */
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+  background-size: 12px auto;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filter-group select:hover {
+  border-color: #a1d278; /* Color de hover similar al botón de añadir al carrito */
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.clear-filters-button {
+  background: linear-gradient(to right, #6c757d, #5a6268); /* Gradiente gris */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  margin-left: 20px; /* Espacio a la izquierda de los filtros */
+}
+
+.clear-filters-button:hover {
+  background: linear-gradient(to right, #5a6268, #495057);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Estilos para el botón de eliminar todos los productos */
+.delete-button {
+  background: linear-gradient(to right, #dc3545, #c82333); /* Degradado rojo */
+  color: white;
+  padding: 14px 30px; /* Más padding */
+  border: none;
+  border-radius: 10px; /* Más redondeado */
+  cursor: pointer;
+  font-size: 1.05em;
+  font-weight: 600;
+  margin-bottom: 35px; /* Más espacio */
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.25); /* Sombra con color del botón */
+}
+
+.delete-button:hover {
+  background: linear-gradient(to right, #c82333, #bd2130);
+  transform: translateY(-3px); /* Más levantamiento */
+  box-shadow: 0 8px 20px rgba(220, 53, 69, 0.35);
+}
+
+.delete-button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(220, 53, 69, 0.15);
+}
+
+/* Mensajes de estado */
+.error-message {
+  background-color: #fff3cd; /* Amarillo muy claro */
+  color: #856404; /* Amarillo oscuro */
+  border: 1px solid #ffeeba;
+  padding: 14px 25px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  font-weight: 500;
+  box-shadow: 0 2px 10px rgba(255, 193, 7, 0.1);
+}
+
+.success-message {
+  background-color: #d4edda; /* Verde muy claro */
+  color: #155724; /* Verde oscuro */
+  border: 1px solid #c3e6cb;
+  padding: 14px 25px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  font-weight: 500;
+  box-shadow: 0 2px 10px rgba(40, 167, 69, 0.1);
+}
+
+.no-products-message {
+  color: #6c757d; /* Gris suave */
+  font-size: 1.3em; /* Más grande */
+  padding: 60px 25px; /* Más padding */
+  background-color: #fcfcfc;
+  border-radius: 15px;
+  border: 2px dashed #e9ecef; /* Borde más pronunciado y suave */
+  margin-top: 35px;
+  box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.03);
+}
+
+/* Contenedor de las tarjetas de productos */
+.product-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); /* Tarjetas ligeramente más grandes */
+  gap: 35px; /* Más espacio entre tarjetas */
+  padding: 25px 0;
+}
+
+/* Estilos para cada tarjeta de producto */
+.product-card {
+  background: linear-gradient(to bottom, #ffffff, #fcfcfc); /* Degradado blanco muy sutil */
+  border: 1px solid #e9ecef;
+  border-radius: 18px; /* Más redondeado */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Sombra más suave y extendida */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding-bottom: 25px; /* Más espacio para el botón */
+}
 
 .product-card:hover {
-  transform: translateY(-5px) scale(1.01);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: #A1D278; /* Borde verde en hover */
+  transform: translateY(-10px); /* Efecto de levantamiento más notorio */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Sombra más grande al pasar el ratón */
 }
 
 .product-image {
   width: 100%;
-  height: 200px;
+  height: 220px; /* Altura fija para las imágenes */
   overflow: hidden;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa; /* Fondo para imágenes sin cargar */
 }
 
 .product-image img {
@@ -168,124 +287,236 @@ h2 {
   height: 100%;
   object-fit: cover;
   display: block;
-  /* Transición para la imagen si su escala o filtro cambian */
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-.product-card:hover .product-image img {
-    transform: scale(1.05);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
 }
 
 .product-info {
-  padding: 20px;
+  padding: 25px; /* Más padding */
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  text-align: left;
 }
 
 .product-name {
-  font-size: 1.4em;
-  font-weight: 700;
-  color: #2c3e50;
+  font-size: 1.8em; /* Más grande */
+  color: #212529;
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .product-category {
-  font-size: 0.9em;
-  color: #888;
-  margin-bottom: 5px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 0.95em;
+  color: #6c757d; /* Gris suave */
+  margin-bottom: 12px;
+  font-style: italic;
 }
 
 .product-description {
-  font-size: 0.95em;
-  color: #555;
-  margin-bottom: 15px;
-  line-height: 1.5;
+  font-size: 1em; /* Ligeramente más grande */
+  color: #495057; /* Gris oscuro suave */
+  margin-bottom: 18px;
+  line-height: 1.6;
   flex-grow: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3; /* Prefijo de proveedor para compatibilidad */
-  line-clamp: 3; /* Propiedad estándar */
-  -webkit-box-orient: vertical;
 }
 
 .product-price {
-  font-size: 1.6em;
+  font-size: 1.6em; /* Más grande */
+  color: #28a745; /* Verde de éxito */
   font-weight: 700;
-  color: #e67e22;
-  margin-top: 15px;
-  margin-bottom: 10px;
-}
-
-.product-stock {
-  font-size: 0.85em;
-  color: #7f8c8d;
-  margin-bottom: 20px;
+  margin-top: 18px;
+  margin-bottom: 25px;
 }
 
 .add-to-cart-button {
-  background-color: #3498db;
+  background: linear-gradient(to right, #007bff, #0056b3); /* Degradado azul primario */
   color: white;
-  padding: 10px 15px;
+  padding: 14px 20px; /* Más padding */
   border: none;
-  border-radius: 8px;
+  border-radius: 10px; /* Más redondeado */
   cursor: pointer;
-  font-size: 0.95em;
+  font-size: 1.05em;
   font-weight: 600;
-  /* Transiciones mejoradas para el botón de la tarjeta */
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
   width: 100%;
   margin-top: auto;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.25); /* Sombra con color del botón */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .add-to-cart-button:hover {
-  background-color: #2980b9;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  background: linear-gradient(to right, #0056b3, #004085);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.35);
 }
 .add-to-cart-button:active {
   transform: translateY(0);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.15);
+}
+
+/* Estilos para el stock */
+.product-stock {
+  font-size: 0.9em;
+  color: #6c757d;
+  margin-bottom: 15px;
+  font-weight: 500;
 }
 
 
 /* Media queries para responsividad */
 @media (max-width: 992px) {
   .product-cards-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
+  }
+  .product-list-container {
+    padding: 30px;
+  }
+  h2 {
+    font-size: 2.5em;
+    margin-bottom: 25px;
+  }
+  h2::after {
+    width: 80px;
+    height: 4px;
+    bottom: -10px;
+  }
+  .search-bar-container {
+    max-width: 500px;
+    margin: 20px auto 30px;
+    padding: 0 20px;
+  }
+  .search-bar-container input[type="text"] {
+    padding: 14px 20px;
+    font-size: 1em;
+  }
+  .search-bar-container button {
+    padding: 12px 18px;
+    font-size: 1.4em;
+  }
+  .filter-section {
+    flex-direction: column; /* Apila los filtros verticalmente */
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+  }
+  .filter-group {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    align-items: center;
+  }
+  .filter-group select {
+    width: 80%; /* Ancho del select en pantallas pequeñas */
+  }
+  .clear-filters-button {
+    margin-left: 0; /* Elimina el margen izquierdo */
+    margin-top: 15px; /* Añade margen superior */
+  }
+  .delete-button {
+    padding: 12px 25px;
+    font-size: 1em;
+    margin-bottom: 30px;
+  }
+  .error-message, .success-message {
+    padding: 12px 20px;
+    margin-bottom: 20px;
+  }
+  .no-products-message {
+    font-size: 1.2em;
+    padding: 50px 20px;
+    margin-top: 30px;
+  }
+  .product-card {
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding-bottom: 20px;
+  }
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  }
+  .product-image {
+    height: 200px;
+  }
+  .product-info {
+    padding: 20px;
+  }
+  .product-name {
+    font-size: 1.6em;
+    margin-bottom: 10px;
+  }
+  .product-category {
+    margin-bottom: 10px;
+  }
+  .product-description {
+    font-size: 0.95em;
+    margin-bottom: 15px;
+  }
+  .product-price {
+    font-size: 1.4em;
+    margin-top: 15px;
+    margin-bottom: 20px;
+  }
+  .add-to-cart-button {
+    padding: 12px 15px;
+    font-size: 1em;
+    gap: 8px;
   }
 }
 
 @media (max-width: 768px) {
   .product-list-container {
     width: 95%;
-    padding: 20px;
     margin: 20px auto;
+    padding: 25px;
+    border-radius: 12px;
+  }
+  h2 {
+    font-size: 2.2em;
+  }
+  h2::after {
+    width: 70px;
   }
   .product-cards-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 25px;
   }
-  h2 {
-    font-size: 1.8em;
-  }
-  .delete-button {
-    width: 90%;
-    margin-bottom: 20px;
+  .product-card {
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.09);
   }
   .product-image {
     height: 180px;
   }
+  .product-info {
+    padding: 18px;
+  }
   .product-name {
-    font-size: 1.2em;
+    font-size: 1.5em;
   }
   .product-price {
-    font-size: 1.4em;
+    font-size: 1.3em;
+  }
+  .add-to-cart-button, .delete-button {
+    padding: 10px 20px;
+    font-size: 0.95em;
+  }
+  .search-bar-container {
+    margin: 15px auto 25px;
+    padding: 0 15px;
+  }
+  .search-bar-container input[type="text"] {
+    padding: 12px 15px;
+    font-size: 0.95em;
+  }
+  .search-bar-container button {
+    padding: 10px 15px;
+    font-size: 1.2em;
   }
 }
 
@@ -294,9 +525,24 @@ h2 {
     padding: 15px;
   }
   h2 {
-    font-size: 1.5em;
+    font-size: 2em;
   }
-  .product-info {
-    padding: 15px;
+  h2::after {
+    width: 60px;
+  }
+  .product-card {
+    border-radius: 10px;
+  }
+  .product-image {
+    height: 150px;
+  }
+  .product-name {
+    font-size: 1.3em;
+  }
+  .product-price {
+    font-size: 1.2em;
+  }
+  .add-to-cart-button, .delete-button {
+    font-size: 0.9em;
   }
 }
